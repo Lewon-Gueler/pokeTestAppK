@@ -1,36 +1,54 @@
 package com.example.pokedexkotlin
 
-import android.content.Context
+import android.content.Intent
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.recyclerview.widget.RecyclerView
 
-class CustomAdapter(var context: Context, var pokemon: ArrayList<Pokemon>): BaseAdapter() {
+class CustomAdapter(val pokemon: ArrayList<Pokemon>): RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
 
-    override fun getView(position: Int, convertView: View?, parent: ViewGroup?): View {
-      val view: View?
-        if ( convertView == null) {
-            view = LayoutInflater.from(context).inflate(R.layout.listcell, parent, false)
-        } else {
-            view = convertView
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
+        val v = LayoutInflater.from(parent.context).inflate(R.layout.listcell, parent, false)
+        return ViewHolder(v)
+
+    }
+
+    override fun getItemCount(): Int {
+        return pokemon.count()
+    }
+
+    override fun onBindViewHolder(holder: ViewHolder, position: Int) {
+        val pokemon: Pokemon = pokemon[position]
+        holder.titel.text = pokemon.name
+        holder.image.setImageResource(pokemon.image)
+
+        holder.itemView.setOnClickListener {
+
+            val intent = Intent (holder.titel.context, DetailActivity::class.java)
+            intent.putExtra("name", holder.titel.text as String)
+            intent.putExtra("image", pokemon.image )
+            intent.putExtra("typ", pokemon.typ)
+            intent.putExtra("dex", pokemon.dex)
+
+            holder.titel.context.startActivity(intent)
+
+            Toast.makeText(holder.titel.context, "test" , Toast.LENGTH_SHORT).show()
+
+
         }
-        view?.findViewById<TextView>(R.id.tvName)?.text = pokemon[position].name
-        view?.findViewById<ImageView>(R.id.ivPokemon)?.setImageResource(pokemon[position].image)
 
-        return view as View
+
     }
 
-    override fun getItem(position: Int): Any {
-        return pokemon[position] //
+    class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
+
+        var titel = itemView.findViewById<TextView>(R.id.tvName)
+        var image = itemView.findViewById<ImageView>(R.id.ivPokemon)
+//        var typ = itemView.findViewById<TextView>(R.id.textViewT)
+//        var dex = itemView.findViewById<TextView>(R.id.textViewDn)
     }
 
-    override fun getItemId(position: Int): Long {
-        return position.toLong() //
-    }
-
-    override fun getCount(): Int {
-        return pokemon.count() //
-    }
 }

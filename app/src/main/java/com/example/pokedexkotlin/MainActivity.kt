@@ -3,17 +3,24 @@ package com.example.pokedexkotlin
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.widget.LinearLayout
+import androidx.recyclerview.widget.LinearLayoutManager
 import kotlinx.android.synthetic.main.activity_main.*
 
 class MainActivity : AppCompatActivity() {
+
+    private lateinit var adapter: CustomAdapter
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val listView = listView
+        val recyclerView = recyView
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
         val arrPokemon: ArrayList<Pokemon> = ArrayList()
-        arrPokemon.add(Pokemon("Abra", R.drawable.abra,"psychic",63 ))
+        arrPokemon.add(Pokemon("abra", R.drawable.abra,"psychic",63 ))
         arrPokemon.add(Pokemon("bulbasaur", R.drawable.bulbasaur, "grass/poison", 1))
         arrPokemon.add(Pokemon("charmander", R.drawable.charmander,"fire", 4))
         arrPokemon.add(Pokemon("dratini", R.drawable.dratini, "dragon", 147 ))
@@ -24,9 +31,11 @@ class MainActivity : AppCompatActivity() {
         arrPokemon.add(Pokemon("pikachu", R.drawable.pikachu,  "electric", 25))
         arrPokemon.add(Pokemon("squirtle", R.drawable.squirtle, "water", 7))
 
-        listView.adapter = CustomAdapter(applicationContext, arrPokemon)
+        recyclerView.adapter = CustomAdapter(arrPokemon)
 
-        listView.setOnItemClickListener { _, _, position, _ ->
+
+
+        /*recyclerView.setOnItemClickListener { _, _, position, _ ->
             val intent = Intent (this, DetailActivity::class.java).apply {//apply better version instead of intent.putExtra...
                 putExtra("name", arrPokemon[position].name)
                 putExtra("image", arrPokemon[position].image)
@@ -35,7 +44,7 @@ class MainActivity : AppCompatActivity() {
             }
 
             startActivity(intent)
-        }
+        } */
 
         }
     }

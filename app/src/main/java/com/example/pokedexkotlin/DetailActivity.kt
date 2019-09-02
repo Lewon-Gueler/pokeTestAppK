@@ -12,9 +12,9 @@ class DetailActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.detailview)
 
-        //
-
-        iVfull.setImageResource(intent.extras.getInt("image")) //
+        intent?.extras?.getInt("image")?.let {
+            iVfull.setImageResource(it)
+        }
         textViewN.text = intent.extras?.getString("name")
         textViewT.text = intent.extras?.getString("typ")
         textViewDn.text = "${intent.extras?.getInt("dex")}"
