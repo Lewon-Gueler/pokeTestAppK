@@ -6,14 +6,20 @@ import android.os.Bundle
 import android.widget.LinearLayout
 import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.pokedexkotlin.networking.Answer
 import com.example.pokedexkotlin.networking.JasonPlaceHolder
 import com.example.pokedexkotlin.networking.Post
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import okhttp3.logging.HttpLoggingInterceptor
+import okhttp3.OkHttpClient
+import java.util.logging.Level
+
 
 class MainActivity : AppCompatActivity() {
 
@@ -23,6 +29,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val logging = HttpLoggingInterceptor()
+        logging.level = HttpLoggingInterceptor.Level.BODY
+        val httpClient = OkHttpClient.Builder()
+        httpClient.addInterceptor(logging);
+
 
         val button = btn_Post
         val textView2 = txtPost
@@ -45,37 +57,43 @@ class MainActivity : AppCompatActivity() {
         recyclerView.adapter = CustomAdapter(arrPokemon)
 
 
-
-
         var retrofit = Retrofit.Builder()
             .baseUrl("http://httpbin.org")
             .addConverterFactory(GsonConverterFactory.create())
+            .client(httpClient.build())
             .build()
 
-        val service = retrofit.create(JasonPlaceHolder::class.java)
+        //val service = retrofit.create(JasonPlaceHolder::class.java)
         //val call = service.getPosts()
-        val call2 = service.sendPosts(Post("dsalkfj", "fdjaksf"))
 
 
         button.setOnClickListener {
-            call2.enqueue(object : Callback<Post> {
-                override fun onResponse(call: Call<Post>?, response: Response<Post>?) {
+           /* service.sendPosts(Post("dsalkfj", "fdjaksf")).enqueue(object : Callback<Answer> {
+                override fun onResponse(call: Call<Answer>?, response: Response<Post>?) {
                     if (response?.isSuccessful() == false) {
-                        textView.text = "Code ${response.code()}"
+                        textView2.text = "Code ${response.code()}"
                         return
                     }
 
                     val stringBuilder = response?.let {
-                        it.body().origin + "" +  it.body().url
+                        it.body().
+                        it.body().origin + "" + "  " + it.body().url
                     }
 
-                    textView.text = stringBuilder
+                    textView2.text = stringBuilder
                 }
 
                 override fun onFailure(call: Call<Post>?, t: Throwable?) {
-                    textView.text = t?.message
+                    textView2.text = t?.message
                 }
-            })
+            }) */
+            var gson = Gson()
+            var json: String = """{"id":1,"url":"login"}"""
+            var testModel = gson.fromJson(json, Answer::class.java)
+            textView2.text = "$testModel"
+            //Assert.assertEquals(testModel.id, 1)
+            //Assert.assertEquals(testModel.description, "Test")
+
         }
 
 
