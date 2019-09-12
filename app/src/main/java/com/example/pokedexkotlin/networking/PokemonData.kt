@@ -1,9 +1,11 @@
 package com.example.pokedexkotlin.networking
 
+import com.example.pokedexkotlin.Pokemon
+import com.google.gson.JsonObject
 import com.google.gson.annotations.SerializedName
 
 data class PokemonData (
-    val number: Int? = null,
-    val name: String? = null,
-    val url: String? = null,
-    val results: ArrayList<PokemonData>)
+    val count: Int? = null,
+    val next: String? = null,
+    val previos: String? = null,
+    val results: List<Pokemon>)

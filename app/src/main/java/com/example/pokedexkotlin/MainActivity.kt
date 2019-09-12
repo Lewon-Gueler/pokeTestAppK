@@ -14,6 +14,7 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.OkHttpClient
+import java.net.URL
 
 
 class MainActivity : AppCompatActivity() {
@@ -25,12 +26,13 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
+        //val url:URL = URL("")
 
 
         val recyclerView = recyView
         recyclerView.layoutManager = LinearLayoutManager(this)
 
-        val arrPokemon: ArrayList<Pokemon> = ArrayList()
+       /* val arrPokemon: ArrayList<Pokemon> = ArrayList()
         arrPokemon.add(Pokemon("abra", R.drawable.abra, "psychic", 63))
         arrPokemon.add(Pokemon("bulbasaur", R.drawable.bulbasaur, "grass/poison", 1))
         arrPokemon.add(Pokemon("charmander", R.drawable.charmander, "fire", 4))
@@ -40,7 +42,7 @@ class MainActivity : AppCompatActivity() {
         arrPokemon.add(Pokemon("larvitar", R.drawable.larvitar, "rock/ground", 246))
         arrPokemon.add(Pokemon("magikarp", R.drawable.magikarp, "water", 129))
         arrPokemon.add(Pokemon("pikachu", R.drawable.pikachu, "electric", 25))
-        arrPokemon.add(Pokemon("squirtle", R.drawable.squirtle, "water", 7))
+        arrPokemon.add(Pokemon("squirtle", R.drawable.squirtle, "water", 7)) */
 
         //recyclerView.adapter = CustomAdapter() //ArrayList vom Adapter übergeben
 
@@ -59,56 +61,35 @@ class MainActivity : AppCompatActivity() {
 
         val service = retrofit.create(Api::class.java)
 
-        service.getAll(20,0).enqueue(object : Callback<List<PokemonData>> {
-            override fun onResponse(call: Call<List<PokemonData>>, response: Response<List<PokemonData>>) {
+        //GET Names and URL of 300 Pokemon
+        service.getAll(300,0).enqueue(object : Callback<PokemonData> {
+            override fun onResponse(call: Call<PokemonData>, response: Response<PokemonData>) {
+                if (!response.isSuccessful) {
+                    tvName.text = "Code ${response.code()}"
+                    return
+                }
+                recyclerView.adapter = CustomAdapter(response.body().results)
+            }
+            override fun onFailure(call: Call<PokemonData>, t: Throwable) {
+                tvName.text = t.message
+            }
+        })
+        //GET Inforamtion for one Pokemon
+        service.getPokemon(3).enqueue(object :Callback<Pokemon> {
+            override fun onResponse(call: Call<Pokemon>?, response: Response<Pokemon>?) {
+                //1. String mit Split Teilen letzte Element holen nach / teilen
+                //2. String zu URL Object umwandeln mitels Methode Endpunkt rausholen
+            }
+            override fun onFailure(call: Call<Pokemon>?, t: Throwable?) {
+
             }
 
-            override fun onFailure(call: Call<List<PokemonData>>?, t: Throwable?) {
-
-            }
         })
     }
 }
 
-
-
-
-
-
-
-        //val service = retrofit.create(JasonPlaceHolder::class.java)
-        //val call = service.getPosts()
-
-
-       /*button.setOnClickListener {
-            service.sendPosts(PokemonData("dsalkfj", "fdjaksf")).enqueue(object : Callback<Answer> {
-                override fun onResponse(call: Call<Answer>?, response: Response<PokemonData>?) {
-                    if (response?.isSuccessful() == false) {
-                        textView2.text = "Code ${response.code()}"
-                        return
-                    }
-
-                    val stringBuilder = response?.let {
-                        it.body().
-                        it.body().origin + "" + "  " + it.body().url
-                    }
-
-                    textView2.text = stringBuilder
-                }
-
-                override fun onFailure(call: Call<PokemonData>?, t: Throwable?) {
-                    textView2.text = t?.message
-                }
-            }) */
-            /*var gson = Gson()
-            var json: String = """{"id":1,"url":"login"}"""
-            var testModel = gson.fromJson(json, Answer::class.java)
-            textView2.text = "$testModel"
-            //Assert.assertEquals(testModel.id, 1)
-            //Assert.assertEquals(testModel.description, "Test")
-
-
-        }  */
+// Intent Nur Pokemon Parcebel machen
+//
 
 
 

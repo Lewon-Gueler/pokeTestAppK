@@ -8,7 +8,7 @@ import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pokedexkotlin.networking.PokemonData
 
-class CustomAdapter(val pokemon: ArrayList<PokemonData>): RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
+class CustomAdapter(val pokemon: List<Pokemon>): RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -22,7 +22,7 @@ class CustomAdapter(val pokemon: ArrayList<PokemonData>): RecyclerView.Adapter<C
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val pokemon: PokemonData = pokemon[position]
+        val pokemon: Pokemon = pokemon[position]
         holder.titel.text = pokemon.name
 
         //holder.image.setImageResource(pokemon.image)
