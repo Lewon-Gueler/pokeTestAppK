@@ -6,8 +6,9 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
+import com.example.pokedexkotlin.networking.PokemonData
 
-class CustomAdapter(val pokemon: ArrayList<Pokemon>): RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
+class CustomAdapter(val pokemon: ArrayList<PokemonData>): RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -17,29 +18,29 @@ class CustomAdapter(val pokemon: ArrayList<Pokemon>): RecyclerView.Adapter<Custo
     }
 
     override fun getItemCount(): Int {
-        return pokemon.count()
+        return pokemon.size
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val pokemon: Pokemon = pokemon[position]
+        val pokemon: PokemonData = pokemon[position]
         holder.titel.text = pokemon.name
-        holder.image.setImageResource(pokemon.image)
+
+        //holder.image.setImageResource(pokemon.image)
 
         holder.itemView.setOnClickListener {
 
-            val intent = Intent (holder.titel.context, DetailActivity::class.java)
+           /* val intent = Intent (holder.titel.context, DetailActivity::class.java)
             intent.putExtra("name", holder.titel.text as String)
             intent.putExtra("image", pokemon.image )
             intent.putExtra("typ", pokemon.typ)
             intent.putExtra("dex", pokemon.dex)
 
             holder.titel.context.startActivity(intent)
+            */
 
-            Toast.makeText(holder.titel.context, "test" , Toast.LENGTH_SHORT).show()
-
+            Toast.makeText(holder.titel.context, "open new Screen" , Toast.LENGTH_SHORT).show()
 
         }
-
 
     }
 

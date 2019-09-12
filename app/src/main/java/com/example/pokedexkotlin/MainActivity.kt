@@ -1,16 +1,12 @@
 package com.example.pokedexkotlin
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.widget.LinearLayout
-import android.widget.TextView
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.pokedexkotlin.networking.Answer
-import com.example.pokedexkotlin.networking.JasonPlaceHolder
-import com.example.pokedexkotlin.networking.Post
-import com.google.gson.Gson
+import com.example.pokedexkotlin.networking.Api
+import com.example.pokedexkotlin.networking.PokemonData
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.listcell.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -18,7 +14,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.OkHttpClient
-import java.util.logging.Level
 
 
 class MainActivity : AppCompatActivity() {
@@ -30,15 +25,8 @@ class MainActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
 
-        val logging = HttpLoggingInterceptor()
-        logging.level = HttpLoggingInterceptor.Level.BODY
-        val httpClient = OkHttpClient.Builder()
-        httpClient.addInterceptor(logging);
 
 
-        val button = btn_Post
-        val textView2 = txtPost
-        val textView = txtResponse
         val recyclerView = recyView
         recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -54,22 +42,47 @@ class MainActivity : AppCompatActivity() {
         arrPokemon.add(Pokemon("pikachu", R.drawable.pikachu, "electric", 25))
         arrPokemon.add(Pokemon("squirtle", R.drawable.squirtle, "water", 7))
 
-        recyclerView.adapter = CustomAdapter(arrPokemon)
+        //recyclerView.adapter = CustomAdapter() //ArrayList vom Adapter übergeben
 
+        //Logging
+        val logging = HttpLoggingInterceptor()
+        logging.level = HttpLoggingInterceptor.Level.BODY
+        val httpClient = OkHttpClient.Builder()
+        httpClient.addInterceptor(logging)
 
+        //creating Retrofit
         var retrofit = Retrofit.Builder()
-            .baseUrl("http://httpbin.org")
+            .baseUrl("https://pokeapi.co/api/v2/")
             .addConverterFactory(GsonConverterFactory.create())
             .client(httpClient.build())
             .build()
+
+        val service = retrofit.create(Api::class.java)
+
+        service.getAll(20,0).enqueue(object : Callback<List<PokemonData>> {
+            override fun onResponse(call: Call<List<PokemonData>>, response: Response<List<PokemonData>>) {
+            }
+
+            override fun onFailure(call: Call<List<PokemonData>>?, t: Throwable?) {
+
+            }
+        })
+    }
+}
+
+
+
+
+
+
 
         //val service = retrofit.create(JasonPlaceHolder::class.java)
         //val call = service.getPosts()
 
 
-        button.setOnClickListener {
-           /* service.sendPosts(Post("dsalkfj", "fdjaksf")).enqueue(object : Callback<Answer> {
-                override fun onResponse(call: Call<Answer>?, response: Response<Post>?) {
+       /*button.setOnClickListener {
+            service.sendPosts(PokemonData("dsalkfj", "fdjaksf")).enqueue(object : Callback<Answer> {
+                override fun onResponse(call: Call<Answer>?, response: Response<PokemonData>?) {
                     if (response?.isSuccessful() == false) {
                         textView2.text = "Code ${response.code()}"
                         return
@@ -83,23 +96,23 @@ class MainActivity : AppCompatActivity() {
                     textView2.text = stringBuilder
                 }
 
-                override fun onFailure(call: Call<Post>?, t: Throwable?) {
+                override fun onFailure(call: Call<PokemonData>?, t: Throwable?) {
                     textView2.text = t?.message
                 }
             }) */
-            var gson = Gson()
+            /*var gson = Gson()
             var json: String = """{"id":1,"url":"login"}"""
             var testModel = gson.fromJson(json, Answer::class.java)
             textView2.text = "$testModel"
             //Assert.assertEquals(testModel.id, 1)
             //Assert.assertEquals(testModel.description, "Test")
 
-        }
+
+        }  */
 
 
-    }
-}
 
-//To-Do Post, put, delete Request
+
+
 
 
