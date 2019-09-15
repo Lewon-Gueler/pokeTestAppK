@@ -1,6 +1,5 @@
 package com.example.pokedexkotlin
 
-import java.net.URL
 
+open class Pokemon (var name: String, var url: String, var dataPoke: PokemonData?)
 
-data class Pokemon (var name: String, var url: String)

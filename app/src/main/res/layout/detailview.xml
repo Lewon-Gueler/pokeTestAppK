@@ -23,9 +23,9 @@
         android:layout_height="32dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="DexNumber:"
-        android:textStyle="bold"
+        android:text="Weight:"
         android:textColor="@color/colorBlack"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewTyp" />
 
@@ -44,9 +44,9 @@
         android:layout_height="32dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
-        android:text="Typ:"
-        android:textStyle="bold"
+        android:text="Height"
         android:textColor="@color/colorBlack"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewName" />
 
