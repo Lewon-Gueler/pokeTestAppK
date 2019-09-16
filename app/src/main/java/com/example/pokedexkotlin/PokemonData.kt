@@ -1,5 +1,5 @@
 package com.example.pokedexkotlin
 
 data class PokemonData (
-     var height: Int, var weight: Int
+     val height: Int, val weight: Int, val id: Int, val species: PokemonSpecies
 )

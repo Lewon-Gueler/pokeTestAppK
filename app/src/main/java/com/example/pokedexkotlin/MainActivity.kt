@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.pokedexkotlin.networking.Api
 import com.example.pokedexkotlin.networking.PokemonList
+import com.facebook.drawee.backends.pipeline.Fresco
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.listcell.*
 import retrofit2.Call
@@ -16,6 +17,12 @@ import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.OkHttpClient
 
 
+
+
+
+
+
+
 class MainActivity : AppCompatActivity() {
 
     private lateinit var adapter: CustomAdapter
@@ -24,6 +31,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        //using Fresco to show image
+        Fresco.initialize(this)
 
 
         val recyclerView = recyView
@@ -55,24 +65,38 @@ class MainActivity : AppCompatActivity() {
                     return
                 }
                 recyclerView.adapter = CustomAdapter(response.body().results)
+
             }
             override fun onFailure(call: Call<PokemonList>, t: Throwable) {
                 tvName.text = t.message
             }
         })
 
-       /* //GET Inforamtion for one Pokemon
-        service.getPokemon(3).enqueue(object :Callback<Pokemon> {
-            override fun onResponse(call: Call<Pokemon>?, response: Response<Pokemon>?) {
-                //1. String mit Split Teilen letzte Element holen nach / teilen
-                //2. String zu URL Object umwandeln mitels Methode Endpunkt rausholen
-            }
-            override fun onFailure(call: Call<Pokemon>?, t: Throwable?) {
+
+        //creating Retrofit
+        var retrofit2 = Retrofit.Builder()
+            .baseUrl("https://pokeres.bastionbot.org/images/")
+            .addConverterFactory(GsonConverterFactory.create())
+            .client(httpClient.build())
+            .build()
+
+        val service2 = retrofit2.create(Api::class.java)
+
+
+        //Need id from each Pokemon
+
+        //GET Images
+        service2.getImages(1).enqueue(object : Callback<PokemonImages> {
+            override fun onResponse(call: Call<PokemonImages>?, response: Response<PokemonImages>?) {
 
             }
 
-        }) */
+            override fun onFailure(call: Call<PokemonImages>?, t: Throwable?) {
 
+            }
+
+
+        })
 
     }
 }

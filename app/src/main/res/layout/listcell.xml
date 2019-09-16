@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,16 +8,14 @@
     android:descendantFocusability="blocksDescendants"
     tools:context=".MainActivity">
 
-    <ImageView
-        android:id="@+id/ivPokemon"
-        android:layout_width="80dp"
-        android:layout_height="80dp"
-        android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
-        android:layout_marginBottom="8dp"
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/myImageView"
+        android:layout_width="100dp"
+        android:layout_height="100dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
 
     <TextView
         android:id="@+id/tvName"
@@ -26,8 +25,8 @@
         android:layout_marginTop="16dp"
         android:text="Pokemon Name"
         android:textColor="#000"
-        app:layout_constraintStart_toEndOf="@+id/ivPokemon"
-        app:layout_constraintTop_toTopOf="@+id/ivPokemon" />
+        app:layout_constraintStart_toEndOf="@id/myImageView"
+        app:layout_constraintTop_toTopOf="@id/myImageView" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

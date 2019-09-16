@@ -50,10 +50,10 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewName" />
 
-    <ImageView
+    <com.facebook.drawee.view.SimpleDraweeView
         android:id="@+id/iVfull"
-        android:layout_width="273dp"
-        android:layout_height="295dp"
+        android:layout_width="234dp"
+        android:layout_height="200dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:src="@drawable/charmander"
@@ -81,5 +81,68 @@
         android:layout_marginTop="16dp"
         app:layout_constraintStart_toEndOf="@+id/textViewName"
         app:layout_constraintTop_toBottomOf="@+id/iVfull" />
+
+    <TextView
+        android:id="@+id/tv_id"
+        android:layout_width="87dp"
+        android:layout_height="29dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="ID:"
+        android:textStyle="bold"
+        android:textColor="@color/colorBlack"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textViewNumber" />
+
+    <TextView
+        android:id="@+id/textViewID"
+        android:layout_width="158dp"
+        android:layout_height="30dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toEndOf="@+id/tv_id"
+        app:layout_constraintTop_toBottomOf="@+id/textViewDn" />
+
+    <TextView
+        android:id="@+id/tvCR"
+        android:layout_width="85dp"
+        android:layout_height="29dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="capture_rate:"
+        android:textColor="@color/colorBlack"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tv_id" />
+
+    <TextView
+        android:id="@+id/textView4"
+        android:layout_width="98dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        android:text="hatch_counter:"
+        android:textColor="@color/colorBlack"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tvCR" />
+
+    <TextView
+        android:id="@+id/textViewCR"
+        android:layout_width="157dp"
+        android:layout_height="27dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toEndOf="@+id/tvCR"
+        app:layout_constraintTop_toBottomOf="@+id/textViewID" />
+
+    <TextView
+        android:id="@+id/textViewHC"
+        android:layout_width="153dp"
+        android:layout_height="28dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginTop="16dp"
+        app:layout_constraintStart_toEndOf="@+id/textView4"
+        app:layout_constraintTop_toBottomOf="@+id/textViewCR" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

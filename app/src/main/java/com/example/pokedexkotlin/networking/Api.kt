@@ -1,7 +1,6 @@
 package com.example.pokedexkotlin.networking
 
-import com.example.pokedexkotlin.Pokemon
-import com.example.pokedexkotlin.PokemonData
+import com.example.pokedexkotlin.*
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
@@ -15,6 +14,16 @@ interface Api {
 
     @GET
     fun getPokeWithURL(@Url url: String) : Call<PokemonData>
+
+    @GET
+    fun getSpecies(@Url speciesurl: String): Call<PokemonSpeciesData>
+
+    @GET("pokemon/{id}.png")
+    fun getImages(@Path("id" )id: Int): Call<PokemonImages>
+
+
+
+
 
     @GET("pokemon/{id}")
     fun getPokemon(@Path("id")id: Int) :Call<Pokemon>
