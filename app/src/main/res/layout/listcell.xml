@@ -22,9 +22,11 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:text="Pokemon Name"
-        android:textColor="#000"
+        android:layout_marginTop="32dp"
+        android:text="pokemon"
+        android:textColor="@color/colorBlack"
+        android:textStyle="italic"
+        android:textSize="25dp"
         app:layout_constraintStart_toEndOf="@id/myImageView"
         app:layout_constraintTop_toTopOf="@id/myImageView" />
 

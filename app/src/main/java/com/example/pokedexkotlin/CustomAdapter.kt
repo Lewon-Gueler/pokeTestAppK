@@ -49,7 +49,6 @@ class CustomAdapter(val pokemon: List<Pokemon>): RecyclerView.Adapter<CustomAdap
             //["https:" ,"","pokeapi.co","api","v2","version-group","6" ,""]
             val pokeIndexParts = pokemon.url.split("/")
             val pokemonId = pokeIndexParts[pokeIndexParts.size-2] //Zweit letzte Stelle von der url
-            
 
             //Toast.makeText(holder.titel.context, pokemonId , Toast.LENGTH_LONG).show()
 

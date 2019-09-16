@@ -8,21 +8,34 @@
     tools:context=".MainActivity">
 
 
+    <com.facebook.drawee.view.SimpleDraweeView
+        android:id="@+id/iVfull"
+        android:layout_width="250dp"
+        android:layout_height="250dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:src="@drawable/charmander"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:srcCompat="@tools:sample/avatars" />
+
+
     <TextView
         android:id="@+id/textViewDn"
-        android:layout_width="163dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="130dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/colorBlack"
         app:layout_constraintStart_toEndOf="@+id/textViewNumber"
         app:layout_constraintTop_toBottomOf="@+id/textViewT" />
 
     <TextView
         android:id="@+id/textViewNumber"
-        android:layout_width="86dp"
-        android:layout_height="32dp"
+        android:layout_width="85dp"
+        android:layout_height="25dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="Weight:"
         android:textColor="@color/colorBlack"
         android:textStyle="bold"
@@ -31,84 +44,76 @@
 
     <TextView
         android:id="@+id/textViewT"
-        android:layout_width="163dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="130dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/colorBlack"
         app:layout_constraintStart_toEndOf="@+id/textViewTyp"
         app:layout_constraintTop_toBottomOf="@+id/textViewN" />
 
     <TextView
         android:id="@+id/textViewTyp"
-        android:layout_width="86dp"
-        android:layout_height="32dp"
+        android:layout_width="85dp"
+        android:layout_height="25dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="Height"
         android:textColor="@color/colorBlack"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewName" />
 
-    <com.facebook.drawee.view.SimpleDraweeView
-        android:id="@+id/iVfull"
-        android:layout_width="234dp"
-        android:layout_height="200dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
-        android:src="@drawable/charmander"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        tools:srcCompat="@tools:sample/avatars" />
-
     <TextView
         android:id="@+id/textViewName"
-        android:layout_width="86dp"
-        android:layout_height="32dp"
+        android:layout_width="85dp"
+        android:layout_height="25dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="16dp"
         android:text="Name:"
-        android:textStyle="bold"
         android:textColor="@color/colorBlack"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/iVfull" />
 
     <TextView
         android:id="@+id/textViewN"
-        android:layout_width="163dp"
-        android:layout_height="32dp"
-        android:layout_marginStart="16dp"
+        android:layout_width="130dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="8dp"
         android:layout_marginTop="16dp"
+        android:textColor="@color/colorBlack"
         app:layout_constraintStart_toEndOf="@+id/textViewName"
         app:layout_constraintTop_toBottomOf="@+id/iVfull" />
 
     <TextView
         android:id="@+id/tv_id"
-        android:layout_width="87dp"
-        android:layout_height="29dp"
+        android:layout_width="85dp"
+        android:layout_height="25dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="ID:"
-        android:textStyle="bold"
         android:textColor="@color/colorBlack"
+        android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/textViewNumber" />
 
     <TextView
         android:id="@+id/textViewID"
-        android:layout_width="158dp"
-        android:layout_height="30dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="130dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/colorBlack"
         app:layout_constraintStart_toEndOf="@+id/tv_id"
         app:layout_constraintTop_toBottomOf="@+id/textViewDn" />
 
     <TextView
         android:id="@+id/tvCR"
         android:layout_width="85dp"
-        android:layout_height="29dp"
+        android:layout_height="25dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="capture_rate:"
         android:textColor="@color/colorBlack"
         android:textStyle="bold"
@@ -117,10 +122,10 @@
 
     <TextView
         android:id="@+id/textView4"
-        android:layout_width="98dp"
+        android:layout_width="95dp"
         android:layout_height="25dp"
         android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="8dp"
         android:text="hatch_counter:"
         android:textColor="@color/colorBlack"
         android:textStyle="bold"
@@ -129,20 +134,33 @@
 
     <TextView
         android:id="@+id/textViewCR"
-        android:layout_width="157dp"
-        android:layout_height="27dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="130dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/colorBlack"
         app:layout_constraintStart_toEndOf="@+id/tvCR"
         app:layout_constraintTop_toBottomOf="@+id/textViewID" />
 
     <TextView
         android:id="@+id/textViewHC"
-        android:layout_width="153dp"
-        android:layout_height="28dp"
-        android:layout_marginStart="16dp"
-        android:layout_marginTop="16dp"
+        android:layout_width="130dp"
+        android:layout_height="25dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        android:textColor="@color/colorBlack"
         app:layout_constraintStart_toEndOf="@+id/textView4"
         app:layout_constraintTop_toBottomOf="@+id/textViewCR" />
+
+    <ImageButton
+        android:id="@+id/imageButton3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_favo_wo" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
