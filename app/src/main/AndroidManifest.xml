@@ -13,8 +13,9 @@
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning">
         <activity android:name=".CustomAdapter"/>
-        <activity android:name=".Pokemon"/>
+        <activity android:name=".DataClasses.Pokemon"/>
         <activity android:name=".DetailActivity"/>
+        <activity android:name=".DetailFragment"/>
         <activity android:name=".MainActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

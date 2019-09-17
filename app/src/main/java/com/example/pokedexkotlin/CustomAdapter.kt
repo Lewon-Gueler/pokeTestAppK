@@ -7,9 +7,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
+import com.example.pokedexkotlin.DataClasses.Pokemon
 import com.facebook.drawee.view.SimpleDraweeView
-
-
+import android.os.Bundle
+import com.example.pokedexkotlin.Fragments.Fragment1
 
 
 class CustomAdapter(val pokemon: List<Pokemon>): RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
@@ -45,32 +46,15 @@ class CustomAdapter(val pokemon: List<Pokemon>): RecyclerView.Adapter<CustomAdap
         holder.itemView.setOnClickListener {
 
             val pokeIndex = pokemon.url
-
             //["https:" ,"","pokeapi.co","api","v2","version-group","6" ,""]
             val pokeIndexParts = pokemon.url.split("/")
             val pokemonId = pokeIndexParts[pokeIndexParts.size-2] //Zweit letzte Stelle von der url
 
-            //Toast.makeText(holder.titel.context, pokemonId , Toast.LENGTH_LONG).show()
-
-           val intent = Intent (holder.titel.context, DetailActivity::class.java)
+            val intent = Intent (holder.titel.context, DetailActivity::class.java)
             intent.putExtra("name", holder.titel.text as String)
             intent.putExtra("url", pokeIndex )
-
-            //intent.setData(uri)
             intent.putExtra("image", uri.toString())
-
-            //Gives the imageID
-            //intent.putExtra("imageID", pokemonId)
-
             holder.titel.context.startActivity(intent)
-
-
-            /*
-           intent.putExtra("image", pokemon.image )
-           intent.putExtra("typ", pokemon.typ)
-           intent.putExtra("dex", pokemon.dex)
-           */
-
 
 
         }

@@ -1,4 +1,4 @@
-package com.example.pokedexkotlin
+package com.example.pokedexkotlin.DataClasses
 
 data class PokemonImages (
     val image: String

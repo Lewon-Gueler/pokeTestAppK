@@ -1,4 +1,4 @@
-package com.example.pokedexkotlin
+package com.example.pokedexkotlin.DataClasses
 
 import com.google.gson.annotations.SerializedName
 

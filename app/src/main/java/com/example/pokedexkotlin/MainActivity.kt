@@ -3,8 +3,9 @@ package com.example.pokedexkotlin
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.pokedexkotlin.DataClasses.PokemonImages
 import com.example.pokedexkotlin.networking.Api
-import com.example.pokedexkotlin.networking.PokemonList
+import com.example.pokedexkotlin.DataClasses.PokemonList
 import com.facebook.drawee.backends.pipeline.Fresco
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.listcell.*
@@ -15,11 +16,6 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.OkHttpClient
-
-
-
-
-
 
 
 
@@ -72,7 +68,6 @@ class MainActivity : AppCompatActivity() {
             }
         })
 
-
         //creating Retrofit
         var retrofit2 = Retrofit.Builder()
             .baseUrl("https://pokeres.bastionbot.org/images/")
@@ -101,8 +96,7 @@ class MainActivity : AppCompatActivity() {
     }
 }
 
-// Intent Nur Pokemon Parcebel machen
-//
+// Enum with Typs and Colors
 
 
 

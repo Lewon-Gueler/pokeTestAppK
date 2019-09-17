@@ -2,14 +2,16 @@ package com.example.pokedexkotlin
 
 import android.net.Uri
 import android.os.Bundle
-import android.util.Log
-import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.pokedexkotlin.DataClasses.PokemonData
+import com.example.pokedexkotlin.DataClasses.PokemonSpeciesData
+import com.example.pokedexkotlin.Fragments.Fragment1
+import com.example.pokedexkotlin.Fragments.Fragment2
+import com.example.pokedexkotlin.Fragments.Fragment3
+import com.example.pokedexkotlin.Fragments.Fragment4
 import com.example.pokedexkotlin.networking.Api
-import com.facebook.drawee.backends.pipeline.Fresco
-import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.detailview.*
+import kotlinx.android.synthetic.main.fragment1.*
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Call
@@ -17,57 +19,81 @@ import retrofit2.Callback
 import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
-import com.facebook.imagepipeline.common.ResizeOptions
-import com.facebook.imagepipeline.request.ImageRequest.RequestLevel
-import com.facebook.imagepipeline.request.ImageRequestBuilder
-import com.facebook.imagepipeline.request.ImageRequest
-import com.facebook.imagepipeline.common.ImageDecodeOptions
-import kotlinx.android.synthetic.main.listcell.*
 
 
 class DetailActivity : AppCompatActivity(){
 
+    lateinit var frag1: Fragment1
+    lateinit var frag2: Fragment2
+    lateinit var frag3: Fragment3
+    lateinit var frag4: Fragment4
 
     override fun onCreate(savedInstanceState: Bundle? ) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.detailview)
 
-
-        //Getting the complete url from the first request (mainActivity)
         val newUrl = intent.extras?.getString("url")
+        val newName = intent.extras.getString("name")
 
+        //Setting Name
+        textViewN.text = newName
 
-        textViewN.text = intent.extras?.getString("name")
-
-        //Getting the Image from Main Activity
-
-        //val newImage = intent.extras?.getString("image")
-
-        //val uri: Uri = intent.data
-
+        //Setting Image
         val uriString: String? = intent?.extras?.getString("image")
         val uri: Uri = Uri.parse(uriString)
-
-
         iVfull.setImageURI(uri)
 
+        frag1 = Fragment1()
+        frag2 = Fragment2()
+        frag3 = Fragment3()
+        frag4 = Fragment4()
 
-        //load image from cache
+        // Fragment Stuff
+        val adapter = MyViewPagerAdapter(supportFragmentManager)
 
-        /*val decodeOptions = ImageDecodeOptions.newBuilder().build()
-
-        val request = ImageRequestBuilder
-            .newBuilderWithSource(uri)
-            .setImageDecodeOptions(decodeOptions)
-            .setAutoRotateEnabled(true)
-            .setLocalThumbnailPreviewsEnabled(true)
-            .setLowestPermittedRequestLevel(RequestLevel.FULL_FETCH)
-            .setProgressiveRenderingEnabled(false)
-            .setResizeOptions(ResizeOptions(150, 150))
-            .build()
+        adapter.addFragmentTitle(frag1, "About")
+        adapter.addFragmentTitle(Fragment2(), "Data")
+        adapter.addFragmentTitle(Fragment3(), "Moves")
+        adapter.addFragmentTitle(Fragment4(), "Evolution")
 
 
-         */
+        viewPager.adapter = adapter
+        tabs.setupWithViewPager(viewPager)
+
+
+        //Sending Name to Fragment
+        val data = Bundle()
+        val fragment = Fragment1()
+        data.putString("name", newName as String)
+        fragment.arguments = data
+
+        ibBack.setOnClickListener {
+            super.onBackPressed()
+        }
+
+
+        /* //Getting the complete url from the first request (mainActivity)
+         textViewN.text = intent.extras?.getString("name")
+         Getting the Image from Main Activity
+         val newImage = intent.extras?.getString("image")
+         val uri: Uri = intent.data
+         val uriString: String? = intent?.extras?.getString("image")
+         val uri: Uri = Uri.parse(uriString)
+         iVfull.setImageURI(uri)
+
+         //load image from cache
+         val decodeOptions = ImageDecodeOptions.newBuilder().build()
+         val request = ImageRequestBuilder
+             .newBuilderWithSource(uri)
+             .setImageDecodeOptions(decodeOptions)
+             .setAutoRotateEnabled(true)
+             .setLocalThumbnailPreviewsEnabled(true)
+             .setLowestPermittedRequestLevel(RequestLevel.FULL_FETCH)
+             .setProgressiveRenderingEnabled(false)
+             .setResizeOptions(ResizeOptions(150, 150))
+             .build()
+          */
+
         //Logging
         val logging = HttpLoggingInterceptor()
         logging.level = HttpLoggingInterceptor.Level.BODY
@@ -86,23 +112,20 @@ class DetailActivity : AppCompatActivity(){
         service.getPokeWithURL(newUrl!!).enqueue(object : Callback<PokemonData> {
 
             override fun onResponse(call: Call<PokemonData>?, response: Response<PokemonData>?) {
-                textViewT.text = "${response?.body()?.height}"
-                textViewDn.text ="${response?.body()?.weight}"
-                textViewID.text = "${response?.body()?.id}"
-                val specURL = response?.body()?.species?.speciesUrl
+                frag1.textViewID2.text = "${response?.body()?.id}"
+                frag1.textViewT2.text = "${response?.body()?.height}"
+                frag1.textViewDn2.text ="${response?.body()?.weight}"
 
+
+                val specURL = response?.body()?.species?.speciesUrl
 
                 service.getSpecies(specURL!!).enqueue(object : Callback<PokemonSpeciesData> {
 
-
                     override fun onResponse(call: Call<PokemonSpeciesData>?, response: Response<PokemonSpeciesData>?) {
-
-                        textViewCR.text = response?.body()?.cr
-                        textViewHC.text = "${response?.body()?.hc}"
-
+                        frag1.textViewCR2.text = response?.body()?.cr
+                        frag1.textViewHC2.text = "${response?.body()?.hc}"
                     }
                     override fun onFailure(call: Call<PokemonSpeciesData>?, t: Throwable?) {
-
 
                     }
 
@@ -114,7 +137,6 @@ class DetailActivity : AppCompatActivity(){
             }
 
         })
-
 
     }
 }

@@ -1,6 +1,6 @@
 package com.example.pokedexkotlin.networking
 
-import com.example.pokedexkotlin.*
+import com.example.pokedexkotlin.DataClasses.*
 import retrofit2.Call
 import retrofit2.http.GET
 import retrofit2.http.Path
