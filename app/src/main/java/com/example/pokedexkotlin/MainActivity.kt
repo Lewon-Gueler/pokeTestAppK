@@ -1,12 +1,16 @@
 package com.example.pokedexkotlin
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.example.pokedexkotlin.DataClasses.PokemonData
 import com.example.pokedexkotlin.DataClasses.PokemonImages
 import com.example.pokedexkotlin.networking.Api
 import com.example.pokedexkotlin.DataClasses.PokemonList
+import com.example.pokedexkotlin.DataClasses.TypePokemon
 import com.facebook.drawee.backends.pipeline.Fresco
+import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.listcell.*
 import retrofit2.Call
@@ -22,6 +26,7 @@ import okhttp3.OkHttpClient
 class MainActivity : AppCompatActivity() {
 
     private lateinit var adapter: CustomAdapter
+    private val pokeList: MutableList<PokemonData> = ArrayList()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -54,13 +59,41 @@ class MainActivity : AppCompatActivity() {
         val service = retrofit.create(Api::class.java)
 
         //GET Names and URL of 300 Pokemon
-        service.getAll(300,0).enqueue(object : Callback<PokemonList> {
+        service.getAll(100,0).enqueue(object : Callback<PokemonList> {
             override fun onResponse(call: Call<PokemonList>, response: Response<PokemonList>) {
                 if (!response.isSuccessful) {
                     tvName.text = "Code ${response.code()}"
                     return
                 }
-                recyclerView.adapter = CustomAdapter(response.body().results)
+
+                 response.body().results.forEach{ pokemon ->
+
+                     service.getPokeWithURL(pokemon.url).enqueue(object : Callback<PokemonData> {
+
+                         override fun onResponse(call: Call<PokemonData>?, response: Response<PokemonData>?) {
+                            val poke = PokemonData(name = pokemon.name, types = response?.body()?.types?.map {
+                                it },height = response?.body()?.height, weight = response?.body()?.weight, id = response?.body()?.id, species = response?.body()?.species, url = pokemon.url, sprites = response?.body()?.sprites)
+                           pokeList.add(poke)
+
+                             pokeList.sortBy {
+                                 it.id
+                             }
+                             recyclerView.adapter = CustomAdapter(pokeList)
+
+                             //Intent der Daten für Detail Activity
+                             //val newIntent = Intent(this@MainActivity, DetailActivity::class.java)
+                            // intent.putExtra("sprites", response?.body()?.sprites?.front_shiny)
+                             //startActivity(newIntent)
+
+                         }
+
+                         override fun onFailure(call: Call<PokemonData>?, t: Throwable?) {
+
+                         }
+
+                     })
+                }
+
 
             }
             override fun onFailure(call: Call<PokemonList>, t: Throwable) {

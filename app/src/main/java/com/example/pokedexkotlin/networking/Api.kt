@@ -16,6 +16,10 @@ interface Api {
     fun getPokeWithURL(@Url url: String) : Call<PokemonData>
 
     @GET
+    fun getPokeData(@Url url: String): Call<TypePokemon>
+
+
+    @GET
     fun getSpecies(@Url speciesurl: String): Call<PokemonSpeciesData>
 
     @GET("pokemon/{id}.png")
@@ -26,7 +30,7 @@ interface Api {
 
 
     @GET("pokemon/{id}")
-    fun getPokemon(@Path("id")id: Int) :Call<Pokemon>
+    fun getPokemon(@Path("id")id: Int) :Call<PokemonData>
 
     @GET
     fun get(): retrofit2.Call<PokemonData>

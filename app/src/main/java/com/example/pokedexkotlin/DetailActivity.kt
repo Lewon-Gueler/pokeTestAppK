@@ -52,7 +52,7 @@ class DetailActivity : AppCompatActivity(){
         val adapter = MyViewPagerAdapter(supportFragmentManager)
 
         adapter.addFragmentTitle(frag1, "About")
-        adapter.addFragmentTitle(Fragment2(), "Data")
+        adapter.addFragmentTitle(Fragment2(), "Sprites")
         adapter.addFragmentTitle(Fragment3(), "Moves")
         adapter.addFragmentTitle(Fragment4(), "Evolution")
 
@@ -119,6 +119,7 @@ class DetailActivity : AppCompatActivity(){
 
                 val specURL = response?.body()?.species?.speciesUrl
 
+
                 service.getSpecies(specURL!!).enqueue(object : Callback<PokemonSpeciesData> {
 
                     override fun onResponse(call: Call<PokemonSpeciesData>?, response: Response<PokemonSpeciesData>?) {
@@ -140,3 +141,4 @@ class DetailActivity : AppCompatActivity(){
 
     }
 }
+// Todo Lat init für die ganzen textViews
