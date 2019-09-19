@@ -1,11 +1,13 @@
 package com.example.pokedexkotlin
 
 import android.content.Intent
+import android.graphics.Color
 import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
+import androidx.core.view.isGone
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.example.pokedexkotlin.DataClasses.PokemonData
@@ -19,6 +21,10 @@ class CustomAdapter(val pokemon: List<PokemonData>): RecyclerView.Adapter<Custom
         return ViewHolder(v)
     }
 
+    override fun getItemViewType(position: Int): Int {
+        return position
+    }
+
     override fun getItemCount(): Int {
         return pokemon.size
     }
@@ -28,8 +34,19 @@ class CustomAdapter(val pokemon: List<PokemonData>): RecyclerView.Adapter<Custom
         holder.titel.text = pokemon.name
         val uri = Uri.parse("https://pokeres.bastionbot.org/images/pokemon/${position+1}.png")
         holder.imageView.setImageURI(uri)
-        holder.typ1.text = pokemon.types?.first()?.type?.name
-        holder.typ2.text = pokemon.types?.get(0)?.type?.name //Steht drin aber crash bei 1
+
+        val pokeTypName = pokemon.types?.get(0)?.type?.name
+
+        if (pokemon.types?.size == 2 ) {
+            holder.typ1.text = pokemon.types?.get(0)?.type?.name
+            holder.typ2.text = pokemon.types?.get(1)?.type?.name
+        } else {
+            holder.typ2.text = pokemon.types?.get(0)?.type?.name
+            holder.typ1.visibility = View.INVISIBLE
+
+        }
+
+        //Steht drin aber crash bei 1
        // holder.typ1.text = if (pokemon.types.first().type.name == "FIRE") TypePokemon.FIRE.colorType
 
 
@@ -70,5 +87,13 @@ class CustomAdapter(val pokemon: List<PokemonData>): RecyclerView.Adapter<Custom
 
 
     }
+
+    /*fun TypColor(pokeTypName:String) {
+        when (pokeTypName) {
+            "fire" -> holder.typ2.setBackgroundColor(Color.RED)
+            else -> holder.typ2.setBackgroundColor(Color.GRAY)
+        }
+
+    } */
 
 }

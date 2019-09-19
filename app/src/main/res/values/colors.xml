@@ -10,4 +10,5 @@
     <color name="secondaryTextColor">#ffffff</color>
     <color name="colorBlack">#000</color>
     <color name="colorwhite">#ffffff</color>
+    <color name="fire"> #F08030 </color>
 </resources>

@@ -1,10 +1,13 @@
 package com.example.pokedexkotlin
 
+import android.graphics.Color
 import android.net.Uri
 import android.os.Bundle
+import android.os.Parcelable
 import androidx.appcompat.app.AppCompatActivity
 import com.example.pokedexkotlin.DataClasses.PokemonData
 import com.example.pokedexkotlin.DataClasses.PokemonSpeciesData
+import com.example.pokedexkotlin.DataClasses.Sprites
 import com.example.pokedexkotlin.Fragments.Fragment1
 import com.example.pokedexkotlin.Fragments.Fragment2
 import com.example.pokedexkotlin.Fragments.Fragment3
@@ -32,6 +35,11 @@ class DetailActivity : AppCompatActivity(){
         super.onCreate(savedInstanceState)
         setContentView(R.layout.detailview)
 
+        //tabs.tabTextColors
+
+        //val bundle = intent.getParcelableExtra<Sprites>("list")
+       // textViewN.text = "$bundle"
+
         val newUrl = intent.extras?.getString("url")
         val newName = intent.extras.getString("name")
 
@@ -56,7 +64,6 @@ class DetailActivity : AppCompatActivity(){
         adapter.addFragmentTitle(Fragment3(), "Moves")
         adapter.addFragmentTitle(Fragment4(), "Evolution")
 
-
         viewPager.adapter = adapter
         tabs.setupWithViewPager(viewPager)
 
@@ -69,6 +76,10 @@ class DetailActivity : AppCompatActivity(){
 
         ibBack.setOnClickListener {
             super.onBackPressed()
+        }
+
+        ibFavo.setOnClickListener {
+            ibFavo.setBackgroundResource( R.drawable.ic_favo)
         }
 
 

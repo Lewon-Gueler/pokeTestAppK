@@ -4,11 +4,8 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.pokedexkotlin.DataClasses.PokemonData
-import com.example.pokedexkotlin.DataClasses.PokemonImages
+import com.example.pokedexkotlin.DataClasses.*
 import com.example.pokedexkotlin.networking.Api
-import com.example.pokedexkotlin.DataClasses.PokemonList
-import com.example.pokedexkotlin.DataClasses.TypePokemon
 import com.facebook.drawee.backends.pipeline.Fresco
 import com.google.gson.Gson
 import kotlinx.android.synthetic.main.activity_main.*
@@ -59,7 +56,7 @@ class MainActivity : AppCompatActivity() {
         val service = retrofit.create(Api::class.java)
 
         //GET Names and URL of 300 Pokemon
-        service.getAll(100,0).enqueue(object : Callback<PokemonList> {
+        service.getAll(500,0).enqueue(object : Callback<PokemonList> {
             override fun onResponse(call: Call<PokemonList>, response: Response<PokemonList>) {
                 if (!response.isSuccessful) {
                     tvName.text = "Code ${response.code()}"
@@ -70,9 +67,12 @@ class MainActivity : AppCompatActivity() {
 
                      service.getPokeWithURL(pokemon.url).enqueue(object : Callback<PokemonData> {
 
+
+
                          override fun onResponse(call: Call<PokemonData>?, response: Response<PokemonData>?) {
-                            val poke = PokemonData(name = pokemon.name, types = response?.body()?.types?.map {
-                                it },height = response?.body()?.height, weight = response?.body()?.weight, id = response?.body()?.id, species = response?.body()?.species, url = pokemon.url, sprites = response?.body()?.sprites)
+
+                           val poke = PokemonData(name = pokemon.name, types = response?.body()?.types?.map {
+                                it },height = response?.body()?.height, weight = response?.body()?.weight, id = response?.body()?.id, species = response?.body()?.species, url = pokemon.url, sprites = response?.body()?.sprites, abilities = response?.body()?.abilities)
                            pokeList.add(poke)
 
                              pokeList.sortBy {
@@ -80,10 +80,15 @@ class MainActivity : AppCompatActivity() {
                              }
                              recyclerView.adapter = CustomAdapter(pokeList)
 
+                             val sprites = response?.body()?.sprites
+
+                             /*val newIntent = Intent(applicationContext, DetailActivity::class.java)
+                             val bundle = Bundle()
+                             bundle.putParcelable("list", sprites)
+                             intent.putExtras(bundle)
+                             startActivity(newIntent) */
+
                              //Intent der Daten für Detail Activity
-                             //val newIntent = Intent(this@MainActivity, DetailActivity::class.java)
-                            // intent.putExtra("sprites", response?.body()?.sprites?.front_shiny)
-                             //startActivity(newIntent)
 
                          }
 
@@ -93,7 +98,6 @@ class MainActivity : AppCompatActivity() {
 
                      })
                 }
-
 
             }
             override fun onFailure(call: Call<PokemonList>, t: Throwable) {
@@ -123,17 +127,10 @@ class MainActivity : AppCompatActivity() {
 
             }
 
-
         })
 
     }
+
 }
 
 // Enum with Typs and Colors
-
-
-
-
-
-
-

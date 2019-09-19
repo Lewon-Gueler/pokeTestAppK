@@ -40,6 +40,7 @@
         android:id="@+id/textViewN"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
+        android:layout_marginTop="8dp"
         android:layout_marginEnd="8dp"
         android:layout_marginBottom="8dp"
         android:gravity="right"
@@ -48,7 +49,8 @@
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/tabs"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/iVfull" />
 
 
     <TextView
@@ -60,7 +62,7 @@
         android:background="@drawable/cardborder"
         android:gravity="center"
         android:text="Typ1"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toTopOf="@+id/textViewN"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -73,7 +75,7 @@
         android:background="@drawable/cardborder"
         android:gravity="center"
         android:text="Typ2"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="@+id/textViewN"
         app:layout_constraintTop_toBottomOf="@+id/typ1" />
 
