@@ -80,13 +80,12 @@ class MainActivity : AppCompatActivity() {
                              }
                              recyclerView.adapter = CustomAdapter(pokeList)
 
-                             val sprites = response?.body()?.sprites
 
-                             /*val newIntent = Intent(applicationContext, DetailActivity::class.java)
+                             val newIntent = Intent(applicationContext, DetailActivity::class.java)
                              val bundle = Bundle()
-                             bundle.putParcelable("list", sprites)
+                             bundle.putParcelable("list", poke)
                              intent.putExtras(bundle)
-                             startActivity(newIntent) */
+                             startActivity(newIntent)
 
                              //Intent der Daten für Detail Activity
 

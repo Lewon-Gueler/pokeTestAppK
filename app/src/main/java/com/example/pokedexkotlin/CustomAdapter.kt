@@ -44,23 +44,9 @@ class CustomAdapter(val pokemon: List<PokemonData>): RecyclerView.Adapter<Custom
             holder.typ2.text = pokemon.types?.get(0)?.type?.name
             holder.typ1.visibility = View.INVISIBLE
 
+            //holder.typ2.resources.getColor()
+
         }
-
-        //Steht drin aber crash bei 1
-       // holder.typ1.text = if (pokemon.types.first().type.name == "FIRE") TypePokemon.FIRE.colorType
-
-
-/*
-        val request = ImageRequestBuilder.newBuilderWithSource(uri).setCacheChoice(ImageRequest.CacheChoice.SMALL)
-
-        //Checking if something is in chache
-        val imagePipeline = Fresco.getImagePipeline()
-        val inDiskChache = imagePipeline.isInDiskCache(uri)
-
-        val inDiskChacheSync = imagePipeline.isInDiskCacheSync(uri)
-        Toast.makeText(holder.titel.context,"$inDiskChacheSync",Toast.LENGTH_SHORT).show()
-
-*/
 
         holder.itemView.setOnClickListener {
 

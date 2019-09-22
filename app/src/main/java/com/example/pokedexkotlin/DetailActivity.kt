@@ -37,8 +37,7 @@ class DetailActivity : AppCompatActivity(){
 
         //tabs.tabTextColors
 
-        //val bundle = intent.getParcelableExtra<Sprites>("list")
-       // textViewN.text = "$bundle"
+        val bundle = intent.getParcelableExtra<PokemonData>("list")
 
         val newUrl = intent.extras?.getString("url")
         val newName = intent.extras.getString("name")
