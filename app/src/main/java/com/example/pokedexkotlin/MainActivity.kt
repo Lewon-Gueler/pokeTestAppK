@@ -1,15 +1,17 @@
 package com.example.pokedexkotlin
 
-import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.example.pokedexkotlin.DataClasses.*
+import androidx.recyclerview.widget.RecyclerView
+import com.example.pokedexkotlin.DataClasses.PokemonData
+import com.example.pokedexkotlin.Database.PListDatabase
+import com.example.pokedexkotlin.Database.PokemonDatabase
 import com.example.pokedexkotlin.networking.Api
 import com.facebook.drawee.backends.pipeline.Fresco
-import com.google.gson.Gson
-import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.listcell.*
+import io.realm.Realm
+import io.realm.RealmConfiguration
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
@@ -19,12 +21,10 @@ import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.OkHttpClient
 
 
-
 class MainActivity : AppCompatActivity() {
 
     private lateinit var adapter: CustomAdapter
-    private val pokeList: MutableList<PokemonData> = ArrayList()
-
+    private val pokeList: MutableList<PokemonDatabase> = ArrayList()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -33,10 +33,19 @@ class MainActivity : AppCompatActivity() {
         //using Fresco to show image
         Fresco.initialize(this)
 
+        //Realm first Initial
+        Realm.init(this)
 
-        val recyclerView = recyView
+        //Create Builder of Realm
+        val config = RealmConfiguration.Builder()
+            .name("personRealm")
+            .inMemory() //Realm that runs entirely in memory without being persisted to disk.
+            .build()
+
+        val realm = Realm.getDefaultInstance()
+
+        val recyclerView = findViewById<RecyclerView>(R.id.recyView)
         recyclerView.layoutManager = LinearLayoutManager(this)
-
 
         //recyclerView.adapter = CustomAdapter() //ArrayList vom Adapter übergeben
 
@@ -55,78 +64,75 @@ class MainActivity : AppCompatActivity() {
 
         val service = retrofit.create(Api::class.java)
 
-        //GET Names and URL of 300 Pokemon
-        service.getAll(500,0).enqueue(object : Callback<PokemonList> {
-            override fun onResponse(call: Call<PokemonList>, response: Response<PokemonList>) {
-                if (!response.isSuccessful) {
-                    tvName.text = "Code ${response.code()}"
-                    return
+        val db = realm.where(PokemonDatabase::class.java).findAll()
+
+        if (db.isEmpty()) {
+
+            service.getAllRealm(100,0).enqueue(object : Callback<PListDatabase> {
+                override fun onFailure(call: Call<PListDatabase>?, t: Throwable?) {
+
                 }
 
-                 response.body().results.forEach{ pokemon ->
+                override fun onResponse(call: Call<PListDatabase>?, response: Response<PListDatabase>?) {
+                    val resource = response?.body()
 
-                     service.getPokeWithURL(pokemon.url).enqueue(object : Callback<PokemonData> {
+                    response?.body()?.results?.forEach {pokemon ->
+
+                        val newURL =  pokemon.url
+                        newURL?.let {
+                            service.getPokeWithURLRealm(newURL).enqueue(object : Callback<PokemonDatabase> {
+                                override fun onResponse(call: Call<PokemonDatabase>?, response: Response<PokemonDatabase>?) {
+
+                                    val plistDatabase = PListDatabase()
+
+                                    //  val realmPokemon = realm.createObject(PokemonDatabase::class.java, pokemon.id )
+                                    val allData = response?.body()
+                                    realm.beginTransaction()
+
+                                    realm.copyToRealmOrUpdate(allData)
+                                    Log.d("current Pokemon", "${allData?.id} ${allData?.types?.get(0)?.type?.name}")
+
+                                    realm.where(PokemonDatabase::class.java).findAll()
+                                    realm.commitTransaction()
 
 
+                                    allData?.let {
+                                        pokeList.add(allData)
+                                    }
 
-                         override fun onResponse(call: Call<PokemonData>?, response: Response<PokemonData>?) {
+                                    pokeList.sortBy {
+                                        it.id
+                                    }
 
-                           val poke = PokemonData(name = pokemon.name, types = response?.body()?.types?.map {
-                                it },height = response?.body()?.height, weight = response?.body()?.weight, id = response?.body()?.id, species = response?.body()?.species, url = pokemon.url, sprites = response?.body()?.sprites, abilities = response?.body()?.abilities)
-                           pokeList.add(poke)
-
-                             pokeList.sortBy {
-                                 it.id
-                             }
-                             recyclerView.adapter = CustomAdapter(pokeList)
+                                    recyclerView.adapter = CustomAdapter(pokeList)
 
 
-                             val newIntent = Intent(applicationContext, DetailActivity::class.java)
-                             val bundle = Bundle()
-                             bundle.putParcelable("list", poke)
-                             intent.putExtras(bundle)
-                             startActivity(newIntent)
+                                }
 
-                             //Intent der Daten für Detail Activity
+                                override fun onFailure(call: Call<PokemonDatabase>?, t: Throwable?) {
 
-                         }
+                                }
 
-                         override fun onFailure(call: Call<PokemonData>?, t: Throwable?) {
+                            })
+                        }
 
-                         }
+                    }
 
-                     })
+
                 }
 
+            })
+        }
+
+        else { //If Datas are saved Load Data from Realm
+
+            val dbp = realm.copyFromRealm(db)
+            dbp.sortBy {
+                it.id
             }
-            override fun onFailure(call: Call<PokemonList>, t: Throwable) {
-                tvName.text = t.message
-            }
-        })
+            recyclerView.adapter = CustomAdapter(dbp)
 
-        //creating Retrofit
-        var retrofit2 = Retrofit.Builder()
-            .baseUrl("https://pokeres.bastionbot.org/images/")
-            .addConverterFactory(GsonConverterFactory.create())
-            .client(httpClient.build())
-            .build()
-
-        val service2 = retrofit2.create(Api::class.java)
-
-
-        //Need id from each Pokemon
-
-        //GET Images
-        service2.getImages(1).enqueue(object : Callback<PokemonImages> {
-            override fun onResponse(call: Call<PokemonImages>?, response: Response<PokemonImages>?) {
-
-            }
-
-            override fun onFailure(call: Call<PokemonImages>?, t: Throwable?) {
-
-            }
-
-        })
+        }
 
     }
 

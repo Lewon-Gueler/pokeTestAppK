@@ -11,7 +11,7 @@
     <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:cardBackgroundColor="@color/cardview_dark_background"
+        app:cardBackgroundColor="@color/secondaryGrey"
         app:cardCornerRadius="15dp"
         app:layout_constraintStart_toStartOf="parent"
         app:cardElevation="1dp"
@@ -24,7 +24,7 @@
 
 
             <com.facebook.drawee.view.SimpleDraweeView
-                android:id="@+id/myImageView"
+                android:id="@+id/iVShinyFront"
                 android:layout_width="100dp"
                 android:layout_height="100dp"
                 android:layout_marginStart="8dp"
@@ -46,7 +46,7 @@
                 android:textColor="@color/colorwhite"
                 android:textSize="25dp"
                 android:textStyle="bold"
-                app:layout_constraintStart_toEndOf="@+id/myImageView"
+                app:layout_constraintStart_toEndOf="@+id/iVShinyFront"
                 app:layout_constraintTop_toTopOf="parent" />
 
             <TextView

@@ -5,13 +5,13 @@ import androidx.core.graphics.toColorInt
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
+import com.example.pokedexkotlin.DataClasses.PokemonData
 
 class MyViewPagerAdapter(manager: FragmentManager) : FragmentPagerAdapter(manager) {
 
     //List of Fragments
     private val fragmentList: MutableList<Fragment> = ArrayList()
     private val titleList: MutableList<String> = ArrayList()
-
 
     override fun getItem(position: Int): Fragment {
         return fragmentList[position]

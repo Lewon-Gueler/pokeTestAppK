@@ -11,4 +11,5 @@
     <color name="colorBlack">#000</color>
     <color name="colorwhite">#ffffff</color>
     <color name="fire"> #F08030 </color>
+    <color name="secondaryGrey">#575757</color>
 </resources>
