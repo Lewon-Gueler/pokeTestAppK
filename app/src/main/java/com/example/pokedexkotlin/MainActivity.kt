@@ -5,7 +5,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
-import com.example.pokedexkotlin.DataClasses.PokemonData
 import com.example.pokedexkotlin.Database.PListDatabase
 import com.example.pokedexkotlin.Database.PokemonDatabase
 import com.example.pokedexkotlin.networking.Api
@@ -43,6 +42,9 @@ class MainActivity : AppCompatActivity() {
             .build()
 
         val realm = Realm.getDefaultInstance()
+
+        //How to get the id from Adapter ? Intent? 
+        val pokemon = realm.where(PokemonDatabase::class.java).equalTo("id",pokeList.get(0).id).findFirst()
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyView)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -95,7 +97,6 @@ class MainActivity : AppCompatActivity() {
                                     realm.where(PokemonDatabase::class.java).findAll()
                                     realm.commitTransaction()
 
-
                                     allData?.let {
                                         pokeList.add(allData)
                                     }
@@ -105,7 +106,6 @@ class MainActivity : AppCompatActivity() {
                                     }
 
                                     recyclerView.adapter = CustomAdapter(pokeList)
-
 
                                 }
 

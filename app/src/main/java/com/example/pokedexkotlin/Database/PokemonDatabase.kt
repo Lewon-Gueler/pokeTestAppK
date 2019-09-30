@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName
 import io.realm.Realm
 import io.realm.RealmList
 import io.realm.RealmObject
+import io.realm.annotations.Ignore
 import io.realm.annotations.PrimaryKey
 import io.realm.annotations.RealmClass
 
@@ -36,6 +37,9 @@ open class PokemonDatabase (
     var sprites: SpritesDatabase? = null,
 
     @SerializedName("abilities")
-    var abilities: RealmList<PokeAbilityDatabase> = RealmList()
+    var abilities: RealmList<PokeAbilityDatabase> = RealmList(),
+
+    @Ignore
+    var imageUri: String? = null
 
 ):RealmObject()

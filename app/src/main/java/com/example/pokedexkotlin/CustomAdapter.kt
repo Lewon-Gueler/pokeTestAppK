@@ -2,15 +2,19 @@ package com.example.pokedexkotlin
 
 import android.content.Intent
 import android.net.Uri
-import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.drawee.view.SimpleDraweeView
-import com.example.pokedexkotlin.DataClasses.PokemonData
 import com.example.pokedexkotlin.Database.PokemonDatabase
+import com.facebook.imagepipeline.request.ImageRequest
+import com.facebook.imagepipeline.request.ImageRequestBuilder
+import io.realm.Realm
+
+
+
 
 
 class CustomAdapter(val pokemon: MutableList<PokemonDatabase>): RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
@@ -29,11 +33,46 @@ class CustomAdapter(val pokemon: MutableList<PokemonDatabase>): RecyclerView.Ada
         return pokemon.size
     }
 
+
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val pokemon: PokemonDatabase = pokemon[position]
         holder.titel.text = pokemon.name
         val uri = Uri.parse("https://pokeres.bastionbot.org/images/pokemon/${position+1}.png")
+
         holder.imageView.setImageURI(uri)
+        val imageConvert = uri.toString()
+
+        val realm = Realm.getDefaultInstance()
+        val pokemonUri: PokemonDatabase = PokemonDatabase()
+        pokemonUri.imageUri = imageConvert
+
+        realm.beginTransaction()
+        realm.commitTransaction()
+
+        //Fresco saving Image in files
+        val request: ImageRequest = ImageRequestBuilder
+            .newBuilderWithSource(uri)
+            .setLowestPermittedRequestLevel(ImageRequest.RequestLevel.ENCODED_MEMORY_CACHE)
+            .setProgressiveRenderingEnabled(false)
+            .build()
+
+
+       // val chacheKey: CacheKey = DefaultCacheKeyFactory.getInstance().getEncodedCacheKey(request, null)
+       // val resource: BinaryResource = ImagePipelineFactory.getInstance().mainFileCache.getResource(chacheKey)
+       // val file = (resource as FileBinaryResource).file
+
+       // val imagePath = file.path
+       // val ur = file.toURI()
+
+
+
+
+
+
+        val imageIntent = Intent (holder.titel.context, MainActivity::class.java).apply {
+            this.putExtra("imagePath", imageConvert)
+        }
+        //holder.titel.context.startActivity(imageIntent)
 
 
         //val pokeTypName = pokemon.types?.get(0)?.type?.name
@@ -55,7 +94,7 @@ class CustomAdapter(val pokemon: MutableList<PokemonDatabase>): RecyclerView.Ada
             val intent = Intent (holder.titel.context, DetailActivity::class.java).apply {
 
                 this.putExtra("id",pokemon.id)
-                this.putExtra("image", uri.toString())
+                this.putExtra("image", imageConvert)
 
             }
 
