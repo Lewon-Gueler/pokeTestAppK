@@ -9,6 +9,11 @@ import android.widget.*
 import androidx.recyclerview.widget.RecyclerView
 import com.facebook.drawee.view.SimpleDraweeView
 import com.example.pokedexkotlin.Database.PokemonDatabase
+import com.facebook.binaryresource.BinaryResource
+import com.facebook.binaryresource.FileBinaryResource
+import com.facebook.cache.common.CacheKey
+import com.facebook.imagepipeline.cache.DefaultCacheKeyFactory
+import com.facebook.imagepipeline.core.ImagePipelineFactory
 import com.facebook.imagepipeline.request.ImageRequest
 import com.facebook.imagepipeline.request.ImageRequestBuilder
 import io.realm.Realm
@@ -37,9 +42,9 @@ class CustomAdapter(val pokemon: MutableList<PokemonDatabase>): RecyclerView.Ada
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val pokemon: PokemonDatabase = pokemon[position]
         holder.titel.text = pokemon.name
-        val uri = Uri.parse("https://pokeres.bastionbot.org/images/pokemon/${position+1}.png")
+        val uri = Uri.parse(pokemon.imageUri)
+        holder.imageView.setImageURI(uri, this)
 
-        holder.imageView.setImageURI(uri)
         val imageConvert = uri.toString()
 
         val realm = Realm.getDefaultInstance()
@@ -48,31 +53,6 @@ class CustomAdapter(val pokemon: MutableList<PokemonDatabase>): RecyclerView.Ada
 
         realm.beginTransaction()
         realm.commitTransaction()
-
-        //Fresco saving Image in files
-        val request: ImageRequest = ImageRequestBuilder
-            .newBuilderWithSource(uri)
-            .setLowestPermittedRequestLevel(ImageRequest.RequestLevel.ENCODED_MEMORY_CACHE)
-            .setProgressiveRenderingEnabled(false)
-            .build()
-
-
-       // val chacheKey: CacheKey = DefaultCacheKeyFactory.getInstance().getEncodedCacheKey(request, null)
-       // val resource: BinaryResource = ImagePipelineFactory.getInstance().mainFileCache.getResource(chacheKey)
-       // val file = (resource as FileBinaryResource).file
-
-       // val imagePath = file.path
-       // val ur = file.toURI()
-
-
-
-
-
-
-        val imageIntent = Intent (holder.titel.context, MainActivity::class.java).apply {
-            this.putExtra("imagePath", imageConvert)
-        }
-        //holder.titel.context.startActivity(imageIntent)
 
 
         //val pokeTypName = pokemon.types?.get(0)?.type?.name

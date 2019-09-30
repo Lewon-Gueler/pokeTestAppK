@@ -39,7 +39,7 @@ open class PokemonDatabase (
     @SerializedName("abilities")
     var abilities: RealmList<PokeAbilityDatabase> = RealmList(),
 
-    @Ignore
-    var imageUri: String? = null
+    @SerializedName("imageurl")
+    var imageUri: String = "https://pokeres.bastionbot.org/images/pokemon/${id}.png"
 
 ):RealmObject()

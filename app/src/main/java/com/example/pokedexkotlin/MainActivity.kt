@@ -3,12 +3,20 @@ package com.example.pokedexkotlin
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import androidx.core.net.toUri
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.pokedexkotlin.Database.PListDatabase
 import com.example.pokedexkotlin.Database.PokemonDatabase
 import com.example.pokedexkotlin.networking.Api
+import com.facebook.binaryresource.BinaryResource
+import com.facebook.binaryresource.FileBinaryResource
+import com.facebook.cache.common.CacheKey
 import com.facebook.drawee.backends.pipeline.Fresco
+import com.facebook.imagepipeline.cache.DefaultCacheKeyFactory
+import com.facebook.imagepipeline.core.ImagePipelineFactory
+import com.facebook.imagepipeline.request.ImageRequest
+import com.facebook.imagepipeline.request.ImageRequestBuilder
 import io.realm.Realm
 import io.realm.RealmConfiguration
 import retrofit2.Call
@@ -44,7 +52,7 @@ class MainActivity : AppCompatActivity() {
         val realm = Realm.getDefaultInstance()
 
         //How to get the id from Adapter ? Intent? 
-        val pokemon = realm.where(PokemonDatabase::class.java).equalTo("id",pokeList.get(0).id).findFirst()
+       // val pokemon = realm.where(PokemonDatabase::class.java).equalTo("id",).findFirst()
 
         val recyclerView = findViewById<RecyclerView>(R.id.recyView)
         recyclerView.layoutManager = LinearLayoutManager(this)
@@ -69,7 +77,7 @@ class MainActivity : AppCompatActivity() {
         val db = realm.where(PokemonDatabase::class.java).findAll()
 
         if (db.isEmpty()) {
-
+            Log.d("MainActivity Leer","ok")
             service.getAllRealm(100,0).enqueue(object : Callback<PListDatabase> {
                 override fun onFailure(call: Call<PListDatabase>?, t: Throwable?) {
 
@@ -87,7 +95,6 @@ class MainActivity : AppCompatActivity() {
 
                                     val plistDatabase = PListDatabase()
 
-                                    //  val realmPokemon = realm.createObject(PokemonDatabase::class.java, pokemon.id )
                                     val allData = response?.body()
                                     realm.beginTransaction()
 
@@ -105,6 +112,24 @@ class MainActivity : AppCompatActivity() {
                                         it.id
                                     }
 
+                                    /*
+                                    val realmPokemon = realm.createObject(PokemonDatabase::class.java, pokemon.id)
+                                    val uri = realmPokemon.imageUri.toUri()
+
+                                    //Fresco saving Image in files
+                                    val request: ImageRequest = ImageRequestBuilder
+                                        .newBuilderWithSource(uri)
+                                        .setLowestPermittedRequestLevel(ImageRequest.RequestLevel.DISK_CACHE)
+                                        .setProgressiveRenderingEnabled(false)
+                                        .build()
+
+                                    val chacheKey: CacheKey = DefaultCacheKeyFactory.getInstance().getEncodedCacheKey(request,this)
+                                    val resource: BinaryResource = ImagePipelineFactory.getInstance().mainFileCache.getResource(chacheKey)
+                                    val file = (resource as FileBinaryResource).file
+
+                                    val imagePath = file.path
+
+                                     */
                                     recyclerView.adapter = CustomAdapter(pokeList)
 
                                 }
@@ -118,7 +143,6 @@ class MainActivity : AppCompatActivity() {
 
                     }
 
-
                 }
 
             })
@@ -126,11 +150,14 @@ class MainActivity : AppCompatActivity() {
 
         else { //If Datas are saved Load Data from Realm
 
+
             val dbp = realm.copyFromRealm(db)
             dbp.sortBy {
                 it.id
             }
+            Log.d("MainActivity Daten","${dbp.size}")
             recyclerView.adapter = CustomAdapter(dbp)
+
 
         }
 
