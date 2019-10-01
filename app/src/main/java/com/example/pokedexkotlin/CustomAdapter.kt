@@ -22,7 +22,9 @@ import io.realm.Realm
 
 
 
-class CustomAdapter(val pokemon: MutableList<PokemonDatabase>): RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
+class CustomAdapter(val pokemon: MutableList<PokemonDatabase> ): RecyclerView.Adapter<CustomAdapter.ViewHolder>() {
+
+
 
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -42,6 +44,7 @@ class CustomAdapter(val pokemon: MutableList<PokemonDatabase>): RecyclerView.Ada
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val pokemon: PokemonDatabase = pokemon[position]
         holder.titel.text = pokemon.name
+
         val uri = Uri.parse(pokemon.imageUri)
         holder.imageView.setImageURI(uri, this)
 
@@ -49,7 +52,6 @@ class CustomAdapter(val pokemon: MutableList<PokemonDatabase>): RecyclerView.Ada
 
         val realm = Realm.getDefaultInstance()
         val pokemonUri: PokemonDatabase = PokemonDatabase()
-        pokemonUri.imageUri = imageConvert
 
         realm.beginTransaction()
         realm.commitTransaction()

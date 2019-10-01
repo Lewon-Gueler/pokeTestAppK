@@ -28,7 +28,7 @@ open class PokemonDatabase (
     var order: Int? = 0,
 
     @SerializedName("name")
-    var name: String? = null,
+    var name: String = "ABRA",
 
     @SerializedName("types")
     var types: RealmList<TypesDatabase> = RealmList(),
@@ -37,9 +37,13 @@ open class PokemonDatabase (
     var sprites: SpritesDatabase? = null,
 
     @SerializedName("abilities")
-    var abilities: RealmList<PokeAbilityDatabase> = RealmList(),
+    var abilities: RealmList<PokeAbilityDatabase> = RealmList()
 
-    @SerializedName("imageurl")
-    var imageUri: String = "https://pokeres.bastionbot.org/images/pokemon/${id}.png"
 
-):RealmObject()
+
+):RealmObject() {
+
+    val imageUri: String
+        get() = "https://pokeres.bastionbot.org/images/pokemon/$id.png"
+
+}

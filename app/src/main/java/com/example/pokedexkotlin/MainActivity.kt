@@ -1,8 +1,12 @@
 package com.example.pokedexkotlin
 
+import android.app.SearchManager
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.widget.SearchView
 import androidx.core.net.toUri
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
@@ -26,16 +30,24 @@ import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 import okhttp3.logging.HttpLoggingInterceptor
 import okhttp3.OkHttpClient
+import io.realm.RealmChangeListener
+import io.realm.RealmResults
 
 
 class MainActivity : AppCompatActivity() {
 
     private lateinit var adapter: CustomAdapter
     private val pokeList: MutableList<PokemonDatabase> = ArrayList()
+    private var realmListener: RealmChangeListener<*>? = null
+    var search2: String? = null
+
+
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
 
         //using Fresco to show image
         Fresco.initialize(this)
@@ -43,18 +55,13 @@ class MainActivity : AppCompatActivity() {
         //Realm first Initial
         Realm.init(this)
 
-        //Create Builder of Realm
-        val config = RealmConfiguration.Builder()
-            .name("personRealm")
-            .inMemory() //Realm that runs entirely in memory without being persisted to disk.
-            .build()
-
         val realm = Realm.getDefaultInstance()
 
-        //How to get the id from Adapter ? Intent? 
-       // val pokemon = realm.where(PokemonDatabase::class.java).equalTo("id",).findFirst()
+        // How to get the id from Adapter ? Intent?
+        // val pokemon = realm.where(PokemonDatabase::class.java).equalTo("id",).findFirst()
 
-        val recyclerView = findViewById<RecyclerView>(R.id.recyView)
+        var recyclerView = findViewById<RecyclerView>(R.id.recyView)
+
         recyclerView.layoutManager = LinearLayoutManager(this)
 
         //recyclerView.adapter = CustomAdapter() //ArrayList vom Adapter übergeben
@@ -112,24 +119,6 @@ class MainActivity : AppCompatActivity() {
                                         it.id
                                     }
 
-                                    /*
-                                    val realmPokemon = realm.createObject(PokemonDatabase::class.java, pokemon.id)
-                                    val uri = realmPokemon.imageUri.toUri()
-
-                                    //Fresco saving Image in files
-                                    val request: ImageRequest = ImageRequestBuilder
-                                        .newBuilderWithSource(uri)
-                                        .setLowestPermittedRequestLevel(ImageRequest.RequestLevel.DISK_CACHE)
-                                        .setProgressiveRenderingEnabled(false)
-                                        .build()
-
-                                    val chacheKey: CacheKey = DefaultCacheKeyFactory.getInstance().getEncodedCacheKey(request,this)
-                                    val resource: BinaryResource = ImagePipelineFactory.getInstance().mainFileCache.getResource(chacheKey)
-                                    val file = (resource as FileBinaryResource).file
-
-                                    val imagePath = file.path
-
-                                     */
                                     recyclerView.adapter = CustomAdapter(pokeList)
 
                                 }
@@ -156,12 +145,66 @@ class MainActivity : AppCompatActivity() {
                 it.id
             }
             Log.d("MainActivity Daten","${dbp.size}")
+            
             recyclerView.adapter = CustomAdapter(dbp)
 
 
         }
 
     }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        val realm = Realm.getDefaultInstance()
+        val db = realm.where(PokemonDatabase::class.java).findAll()
+
+        var recyclerView = findViewById<RecyclerView>(R.id.recyView)
+        recyclerView.layoutManager = LinearLayoutManager(this)
+
+        val newPokeList = realm.copyFromRealm(db)
+        Log.d("new List", "$newPokeList")
+
+        newPokeList.sortBy {
+            it.id
+        }
+
+        menuInflater.inflate(R.menu.main, menu)
+        val searchItem = menu?.findItem(R.id.menu_search)
+        if (searchItem != null) {
+            val searchView = searchItem.actionView as SearchView
+            searchView.setOnQueryTextListener(object: SearchView.OnQueryTextListener{
+                override fun onQueryTextSubmit(query: String?): Boolean {
+                    return true
+                }
+
+                override fun onQueryTextChange(newText: String?): Boolean {
+
+                    search2 = newText
+                    recyclerView.adapter?.notifyDataSetChanged()
+
+                    /*if (newText!!.isEmpty()) {
+                        newPokeList.clear()
+                        val search = newText.toLowerCase()
+                        db.forEach {
+                            if(it.name.toLowerCase().contains(search)) {
+                                newPokeList.add(it)
+                            }
+                        }
+                        recyclerView.adapter?.notifyDataSetChanged()
+
+                    } else {
+                        newPokeList.clear()
+                        newPokeList.addAll(db)
+                        recyclerView.adapter?.notifyDataSetChanged()
+                    } */
+                    return true
+                }
+
+            })
+        }
+
+        return super.onCreateOptionsMenu(menu)
+    }
+
 
 }
 
