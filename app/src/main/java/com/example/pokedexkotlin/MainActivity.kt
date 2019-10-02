@@ -39,7 +39,8 @@ class MainActivity : AppCompatActivity() {
     private lateinit var adapter: CustomAdapter
     private val pokeList: MutableList<PokemonDatabase> = ArrayList()
     private var realmListener: RealmChangeListener<*>? = null
-    var search2: String? = null
+
+   // var search2: String? = null
 
 
 
@@ -157,6 +158,7 @@ class MainActivity : AppCompatActivity() {
         val realm = Realm.getDefaultInstance()
         val db = realm.where(PokemonDatabase::class.java).findAll()
 
+
         var recyclerView = findViewById<RecyclerView>(R.id.recyView)
         recyclerView.layoutManager = LinearLayoutManager(this)
 
@@ -176,32 +178,27 @@ class MainActivity : AppCompatActivity() {
                     return true
                 }
 
-                override fun onQueryTextChange(newText: String?): Boolean {
+                override fun onQueryTextChange(newText: String): Boolean {
 
-                    search2 = newText
-                    recyclerView.adapter?.notifyDataSetChanged()
-
-                    /*if (newText!!.isEmpty()) {
+                    if (newText.isNotEmpty()) {
                         newPokeList.clear()
                         val search = newText.toLowerCase()
-                        db.forEach {
-                            if(it.name.toLowerCase().contains(search)) {
-                                newPokeList.add(it)
-                            }
+                        val filterdEntries = db.filter {
+                            it.name.contains(search)
+
                         }
-                        recyclerView.adapter?.notifyDataSetChanged()
+                        recyclerView.adapter = CustomAdapter(filterdEntries as MutableList<PokemonDatabase>)
 
                     } else {
                         newPokeList.clear()
                         newPokeList.addAll(db)
-                        recyclerView.adapter?.notifyDataSetChanged()
-                    } */
+                        recyclerView.adapter = CustomAdapter(newPokeList)
+                    }
                     return true
                 }
 
             })
         }
-
         return super.onCreateOptionsMenu(menu)
     }
 
