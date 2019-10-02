@@ -82,11 +82,11 @@ class MainActivity : AppCompatActivity() {
 
         val service = retrofit.create(Api::class.java)
 
-        val db = realm.where(PokemonDatabase::class.java).findAll()
+        val db = realm.where(PokemonDatabase::class.java).sort("id").findAll()
 
         if (db.isEmpty()) {
             Log.d("MainActivity Leer","ok")
-            service.getAllRealm(100,0).enqueue(object : Callback<PListDatabase> {
+            service.getAllRealm(500,0).enqueue(object : Callback<PListDatabase> {
                 override fun onFailure(call: Call<PListDatabase>?, t: Throwable?) {
 
                 }
@@ -142,9 +142,7 @@ class MainActivity : AppCompatActivity() {
 
 
             val dbp = realm.copyFromRealm(db)
-            dbp.sortBy {
-                it.id
-            }
+
             Log.d("MainActivity Daten","${dbp.size}")
             
             recyclerView.adapter = CustomAdapter(dbp)
@@ -156,7 +154,7 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         val realm = Realm.getDefaultInstance()
-        val db = realm.where(PokemonDatabase::class.java).findAll()
+        val db = realm.where(PokemonDatabase::class.java).sort("id").findAll()
 
 
         var recyclerView = findViewById<RecyclerView>(R.id.recyView)
@@ -165,9 +163,6 @@ class MainActivity : AppCompatActivity() {
         val newPokeList = realm.copyFromRealm(db)
         Log.d("new List", "$newPokeList")
 
-        newPokeList.sortBy {
-            it.id
-        }
 
         menuInflater.inflate(R.menu.main, menu)
         val searchItem = menu?.findItem(R.id.menu_search)
@@ -190,7 +185,6 @@ class MainActivity : AppCompatActivity() {
                         recyclerView.adapter = CustomAdapter(filterdEntries as MutableList<PokemonDatabase>)
 
                     } else {
-                        newPokeList.clear()
                         newPokeList.addAll(db)
                         recyclerView.adapter = CustomAdapter(newPokeList)
                     }
